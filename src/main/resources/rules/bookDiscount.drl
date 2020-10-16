@@ -1,14 +1,18 @@
 //图书优惠规则
 package book.discount
+import function cn.jianml.drools.util.FunctionUtils.*
 import cn.jianml.drools.entity.Order
+
+global java.util.Map myMap
 
 //规则一：所购图书总价在100元以下的没有优惠
 rule "book_discount_1"
     when
         $order:Order(originalPrice < 100)
     then
-        $order.setRealPrice($order.getOriginalPrice());
-        System.out.println("成功匹配到规则一：所购图书总价在100元以下的没有优惠");
+        $order.setRealPrice(sum($order.getOriginalPrice(), 50d));
+        System.out.println("成功匹配到规则一：所购图书总价在100元以下的优惠-50");
+        setName(myMap);
 end
 
 //规则二：所购图书总价在100到200元的优惠20元
